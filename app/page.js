@@ -68,12 +68,12 @@ function HomePage({ setView }) {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-4xl">
             <div className="inline-block px-3 py-1 bg-atomic-teal/10 border border-atomic-teal/20 text-atomic-teal text-sm font-mono mb-6">
-              THE HADRIAN OF CHEMICALS
+              AGENTIC INFRASTRUCTURE
             </div>
             <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-6 leading-none">
-              Infrastructure for<br />
-              Beauty Contract<br />
-              Manufacturing
+              Agentic Procurement<br />
+              for Specialty<br />
+              Ingredients
             </h1>
             <p className="text-xl text-slate-400 mb-8 max-w-2xl leading-relaxed">
               Valent Systems provides autonomous procurement intelligence for cosmetic and personal care CMOs. 
@@ -109,22 +109,22 @@ function HomePage({ setView }) {
                 <h2 className="text-4xl font-bold">80% of Your COGS<br />Is Trapped in Formula Silos</h2>
               </div>
               <p className="text-slate-400 text-lg mb-6 leading-relaxed">
-                Your R&D chemists quote based on catalog prices; your procurement team buys based on volume tiers. 
-                Valent closes that gap, ensuring your <span className="text-atomic-teal font-mono">Quoting Accuracy</span> matches 
-                your <span className="text-atomic-teal font-mono">Aggregate Buying Power</span>.
+                Your R&D chemists quote based on catalog prices. Your procurement team buys based on volume tiers. 
+                Valent&apos;s agents <span className="text-atomic-teal font-mono">interrogate the delta</span> between 
+                these two systems in real-time, capturing hidden synergies that traditional procurement can&apos;t see.
               </p>
               <div className="space-y-4">
                 <div className="border-l-2 border-atomic-teal pl-4">
                   <div className="text-2xl font-bold text-atomic-teal mb-1 font-mono">$1.8M</div>
-                  <div className="text-slate-400">Average annual margin leak for mid-market beauty CMOs</div>
+                  <div className="text-slate-400">Average annual delta between quoted and achievable pricing</div>
                 </div>
                 <div className="border-l-2 border-slate-700 pl-4">
                   <div className="text-2xl font-bold mb-1 font-mono">60+ SKUs/month</div>
-                  <div className="text-slate-400">Each formula quoted independently without phase-level synergy detection</div>
+                  <div className="text-slate-400">Each formula quoted independently without cross-formula intelligence</div>
                 </div>
                 <div className="border-l-2 border-slate-700 pl-4">
                   <div className="text-2xl font-bold mb-1 font-mono">Zero visibility</div>
-                  <div className="text-slate-400">Into volume-tier jumps across Phase A actives and Phase B emulsifiers</div>
+                  <div className="text-slate-400">Into live procurement volume when R&D generates quotes</div>
                 </div>
               </div>
             </div>
@@ -1087,7 +1087,7 @@ function Footer({ setShowPrivacyModal }) {
           </div>
         </div>
         <div className="border-t border-slate-800 mt-8 pt-8 text-sm text-slate-600 text-center font-mono">
-          © 2024 Valent Systems. The Hadrian of Chemicals.
+          © 2024 Valent Systems. All rights reserved.
         </div>
       </div>
     </footer>
