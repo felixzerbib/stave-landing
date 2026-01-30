@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, Shield, Cpu, Database, AlertTriangle, ChevronRight, Upload, X, FileText, Zap, Lock, Activity, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { ArrowRight, Shield, Cpu, Database, AlertTriangle, ChevronRight, Upload, X, FileText, Zap, Lock, Activity } from 'lucide-react';
 
 export default function Home() {
   const [view, setView] = useState('home');
@@ -653,11 +652,9 @@ function AuditPage() {
   const [volume, setVolume] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [actualFiles, setActualFiles] = useState([]); // Store actual File objects
   const [processing, setProcessing] = useState(false);
   const [processingLogs, setProcessingLogs] = useState([]);
   const [showShadowInsight, setShowShadowInsight] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(''); // 'submitting', 'success', 'error'
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -686,19 +683,17 @@ function AuditPage() {
   };
 
   const handleFiles = (files) => {
-    const fileArray = Array.from(files);
-    const fileMetadata = fileArray.map(file => ({
+    const fileArray = Array.from(files).map(file => ({
       name: file.name,
       size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
     }));
-    setUploadedFiles(prev => [...prev, ...fileMetadata]);
-    setActualFiles(prev => [...prev, ...fileArray]); // Store actual File objects
+    setUploadedFiles(prev => [...prev, ...fileArray]);
     
     // Trigger terminal processing simulation
     setProcessing(true);
     setProcessingLogs([]);
     setShowShadowInsight(false);
-    simulateProcessing(fileMetadata);
+    simulateProcessing(fileArray);
   };
 
   const simulateProcessing = (files) => {
@@ -729,79 +724,13 @@ function AuditPage() {
 
   const removeFile = (index) => {
     setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-    setActualFiles(prev => prev.filter((_, i) => i !== index));
     setProcessingLogs([]);
     setShowShadowInsight(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitStatus('submitting');
-
-    try {
-      // 1. Upload files to Supabase Storage
-      const uploadedFilePaths = [];
-      
-      for (const file of actualFiles) {
-        const timestamp = Date.now();
-        const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const filePath = `audits/${timestamp}_${sanitizedFileName}`;
-        
-        const { data: fileData, error: uploadError } = await supabase.storage
-          .from('audits')
-          .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: false
-          });
-
-        if (uploadError) {
-          console.error('File upload error:', uploadError);
-          throw new Error(`Failed to upload ${file.name}`);
-        }
-
-        uploadedFilePaths.push(fileData.path);
-      }
-
-      // 2. Insert lead data into database
-      const { data, error: dbError } = await supabase
-        .from('intake_leads')
-        .insert([{
-          email: email,
-          company: company,
-          phone: phone,
-          volume_range: volume,
-          files_uploaded: uploadedFilePaths.length,
-          file_paths: uploadedFilePaths,
-          created_at: new Date().toISOString()
-        }])
-        .select();
-
-      if (dbError) {
-        console.error('Database error:', dbError);
-        throw new Error('Failed to save lead data');
-      }
-
-      // Success!
-      setSubmitStatus('success');
-      
-      // Optional: Clear form after successful submission
-      setTimeout(() => {
-        setEmail('');
-        setCompany('');
-        setPhone('');
-        setVolume('');
-        setUploadedFiles([]);
-        setActualFiles([]);
-        setProcessingLogs([]);
-        setShowShadowInsight(false);
-        setSubmitStatus('');
-      }, 3000);
-
-    } catch (error) {
-      console.error('Submission error:', error);
-      setSubmitStatus('error');
-      alert(`Error submitting audit request: ${error.message}\n\nPlease check your Supabase configuration.`);
-    }
+    alert(`Shadow Audit requested for ${company}\nEmail: ${email}\nFiles uploaded: ${uploadedFiles.length}`);
   };
 
   return (
@@ -1045,45 +974,16 @@ function AuditPage() {
 
               <button
                 type="submit"
-                disabled={uploadedFiles.length === 0 || submitStatus === 'submitting'}
+                disabled={uploadedFiles.length === 0}
                 className={`w-full px-8 py-4 font-bold transition-colors flex items-center justify-center gap-2 group ${
-                  uploadedFiles.length === 0 || submitStatus === 'submitting'
+                  uploadedFiles.length === 0
                     ? 'bg-slate-800 text-slate-600 cursor-not-allowed'
-                    : submitStatus === 'success'
-                    ? 'bg-green-600 text-white'
-                    : submitStatus === 'error'
-                    ? 'bg-red-600 text-white'
                     : 'bg-atomic-teal hover:bg-atomic-teal/90 text-slate-950'
                 }`}
               >
-                {submitStatus === 'submitting' ? (
-                  <>
-                    <Activity className="w-5 h-5 animate-pulse" />
-                    Submitting Audit Request...
-                  </>
-                ) : submitStatus === 'success' ? (
-                  <>
-                    <CheckCircle className="w-5 h-5" />
-                    Audit Request Submitted!
-                  </>
-                ) : submitStatus === 'error' ? (
-                  <>
-                    <X className="w-5 h-5" />
-                    Submission Failed - Try Again
-                  </>
-                ) : (
-                  <>
-                    Unlock Full Shadow Insight Report
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
+                Unlock Full Shadow Insight Report
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
-
-              {submitStatus === 'success' && (
-                <div className="mt-4 p-4 bg-green-600/10 border border-green-600/20 text-green-400 text-sm text-center">
-                  ✓ Your audit request has been received. We&apos;ll contact you within 24 hours.
-                </div>
-              )}
 
               <p className="text-sm text-slate-500 mt-4 text-center font-mono">
                 Typical audit reveals $500K-$2M in annual Synergy Points
