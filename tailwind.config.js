@@ -23,6 +23,10 @@ module.exports = {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
+      borderRadius: {
+        'none': '0',
+        DEFAULT: '0',
+      },
     },
   },
   plugins: [],
