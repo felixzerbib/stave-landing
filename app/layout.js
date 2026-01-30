@@ -2,8 +2,8 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata = {
-  title: 'Stave - The Hadrian of Chemicals',
-  description: 'Procurement and liquidity engine for mid-market contract manufacturers. Margin expansion through forward-looking volume.',
+  title: 'Valent Systems',
+  description: 'Agentic procurement for specialty ingredients. Infrastructure for beauty contract manufacturing.',
 }
 
 export default function RootLayout({ children }) {
