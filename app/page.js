@@ -263,8 +263,8 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">Request a Shadow Audit</h2>
           <p className="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">
-            Upload 90 days of historical quotes. We'll show you exactly how much margin 
-            you've been leaving on the table—no commitment required.
+            Upload 90 days of historical quotes. We&apos;ll show you exactly how much margin 
+            you&apos;ve been leaving on the table—no commitment required.
           </p>
 
           <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
